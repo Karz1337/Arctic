@@ -391,7 +391,7 @@ SearchableButtons.MouseButton1Down:Connect(function()
 end)
     end
 
-function CreateToggleSearch(text, menu, callback)
+function CreateToggleSearch(text, menu, VarToToggle, callback)
 local SearchableToggles = Instance.new("TextButton")
 local UICorner = Instance.new("UICorner")
 local TextLabel = Instance.new("TextLabel")
@@ -450,19 +450,19 @@ TextBox.TextSize = 10.000
 UICorner_3.CornerRadius = UDim.new(0, 4)
 UICorner_3.Parent = TextBox
 
-Toggle = false
+VarToToggle = false
 SearchableToggles.MouseButton1Down:Connect(function()
-    if Toggle == true then
-        Toggle = false
+    if VarToToggle == true then
+        VarToToggle = false
         
         local ColorTween = {}
-        ColorTween.BackgroundColor3 = Color3.new(0.0627451, 0.0627451, 0.0627451)
+        ColorTween.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
         local ColorInfo = TweenInfo.new(0.2)
         local ColorToTween = game:GetService("TweenService"):Create(SearchableToggles["Toggle Check"], ColorInfo, ColorTween)
         ColorToTween:Play()
         
     else
-        Toggle = true
+        VarToToggle = true
         
         local ColorTween = {}
         ColorTween.BackgroundColor3 = PolarsUiLib.Frame.HotBar.SelectedColor.BackgroundColor3
@@ -554,4 +554,16 @@ UICorner_2.Parent = TextBox
 NumberValueButtons.MouseButton1Down:Connect(function()
     pcall(callback, tonumber(TextBox.Text))
 end)
+end
+
+function CreateNotification(text, duration)
+	game:GetService("StarterGui"):SetCore("SendNotification", {	Title = "Notification!";	Text = text;	Duration = duration;})
+    local Sound = Instance.new("Sound", game:GetService("Workspace"))
+	Sound.SoundId = "rbxassetid://5035412139"
+	Sound:Play()
+    spawn(function()
+        wait(2)
+        Sound:Destroy()
+    end)
+end
 end
