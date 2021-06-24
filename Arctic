@@ -1,0 +1,831 @@
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Karz1337/Arctic/main/UiLib"))()
+
+    			-- // Vars
+			local detectionVectors = {
+				CHECKER_1 = true,
+				TeleportDetect = true,
+				OneMoreTime = true
+			}
+			
+			-- // Metatable vars
+			local mt = getrawmetatable(game)
+			local backupnamecall = mt.__namecall
+			setreadonly(mt, false)
+			
+			-- // Hook
+			mt.__namecall = newcclosure(function(...)
+				-- // Vars
+				local method = getnamecallmethod()
+				local args = {...}
+			
+				-- // Check if it trying to do naughty
+				if (method == "FireServer" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+				
+				if (method == "CHECKER_1" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+			
+				-- // Fly Bypass
+				if (not checkcaller() and getfenv(1).crash ~= nil and getfenv(1).checkChild ~= nil) then
+					getcallingscript():Destroy()
+					return wait(9e9)
+				end
+			
+				-- // Return
+				return backupnamecall(...)
+			end)
+			
+			-- // End Metatable
+			setreadonly(mt, true)
+
+	function GetPlayer(String)
+		local Found = {}
+		local strl = String:lower()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name:lower():sub(1, #String) == String:lower() then
+					table.insert(Found,v.Name)
+				end
+			end    
+			return Found    
+		end
+
+CreateWindow("Arctic", Color3.fromRGB(65,185,255))
+CreateMenu("Home")
+CreateMenu("Combat")
+CreateMenu("Toggles")
+CreateMenu("Farms")
+CreateMenu("Settings")
+CreateNote("Created By Polar#1912", "Home")
+
+CreateRegButton("Test Sounds", "Home", function()
+	local Sound = Instance.new("Sound", game:GetService("Workspace"))
+	Sound.SoundId = "rbxassetid://5035412139"
+	Sound:Play()
+	wait(2)
+	Sound:Destroy()
+end)
+
+CreateRegButton("Copy Discord Invite", "Home", function()
+	if syn then
+	setclipboard("https://discord.gg/wuH6UQT8Vn")
+	CreateNotification("Copied To Clipboard!", 5)
+	else
+CreateNotification("You're Not Using Synapse! Heres The Link, https://discord.gg/wuH6UQT8Vn", 15)
+	end
+end)
+CreateRegButton("Fly", "Combat", function()
+	CreateNotification("Set Keybind For Fly Is X", 15)
+	
+	local plr = game.Players.LocalPlayer
+				local mouse = plr:GetMouse()
+			
+				localplayer = plr
+			
+				if workspace:FindFirstChild("Core") then
+					workspace.Core:Destroy()
+				end
+			
+				local Core = Instance.new("Part")
+				Core.Name = "Core"
+				Core.Size = Vector3.new(0.05, 0.05, 0.05)
+			
+				spawn(function()
+					Core.Parent = workspace
+					local Weld = Instance.new("Weld", Core)
+					Weld.Part0 = Core
+					Weld.Part1 = localplayer.Character.LowerTorso
+					Weld.C0 = CFrame.new(0, 0, 0)
+				end)
+			
+				workspace:WaitForChild("Core")
+			
+				local torso = workspace.Core
+				flying = true
+				local speed=10
+				local keys={a=false,d=false,w=false,s=false} 
+				local e1
+				local e2
+				local function start()
+					local pos = Instance.new("BodyPosition",torso)
+					local gyro = Instance.new("BodyGyro",torso)
+					pos.Name="EPIXPOS"
+					pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+					pos.position = torso.Position
+					gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+					gyro.cframe = torso.CFrame
+					repeat
+						wait()
+						localplayer.Character.Humanoid.PlatformStand=true
+						local new=gyro.cframe - gyro.cframe.p + pos.position
+						if not keys.w and not keys.s and not keys.a and not keys.d then
+							speed=15
+						end
+						if keys.w then 
+							new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+							speed=speed+0
+						end
+						if keys.s then 
+							new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+							speed=speed+0
+						end
+						if keys.d then 
+							new = new * CFrame.new(speed,0,0)
+							speed=speed+0
+						end
+						if keys.a then 
+							new = new * CFrame.new(-speed,0,0)
+							speed=speed+0
+						end
+						if speed>30 then
+							speed=15
+						end
+						pos.position=new.p
+						if keys.w then
+							gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad(speed*0),0,0)
+						elseif keys.s then
+							gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.rad(speed*0),0,0)
+						else
+							gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+						end
+					until flying == false
+					if gyro then gyro:Destroy() end
+					if pos then pos:Destroy() end
+					flying=false
+					localplayer.Character.Humanoid.PlatformStand=false
+					speed=30
+				end
+				e1=mouse.KeyDown:connect(function(key)
+					if not torso or not torso.Parent then flying=false e1:disconnect() e2:disconnect() return end
+					if key=="w" then
+						keys.w=true
+					elseif key=="s" then
+						keys.s=true
+					elseif key=="a" then
+						keys.a=true
+					elseif key=="d" then
+						keys.d=true
+					elseif key=="x" then
+						if flying==true then
+							flying=false
+						else
+							flying=true
+							start()
+						end
+					end
+				end)
+				e2=mouse.KeyUp:connect(function(key)
+					if key=="w" then
+						keys.w=false
+					elseif key=="s" then
+						keys.s=false
+					elseif key=="a" then
+						keys.a=false
+					elseif key=="d" then
+						keys.d=false
+					end
+				end)
+				start()
+end)
+
+_G.FistLock = false
+CreateToggleSearch("Fist Lock", "Combat", (_G.FistLock), function(InputtedText)
+    local PlayerService = game:GetService("Players")
+    if _G.FistLock == true then
+        _G.FistLock = false
+        wait(.3)
+        game:GetService("Players").LocalPlayer.Character.RightHand.Velocity = Vector3.new(0, 0, 0)
+        game:GetService("Players").LocalPlayer.Character.LeftHand.Velocity = Vector3.new(0, 0, 0)
+        wait(.1)
+        game:GetService("Players").LocalPlayer.Character.RightHand.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("Players").LocalPlayer.Character.LeftHand.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        
+        local RightHand6 = Instance.new("Motor6D", game:GetService("Players").LocalPlayer.Character.RightHand)
+        local LeftHand6 = Instance.new("Motor6D", game:GetService("Players").LocalPlayer.Character.LeftHand)
+        
+        RightHand6.Part0 = game:GetService("Players").LocalPlayer.Character.RightLowerArm
+        RightHand6.Part1 = game:GetService("Players").LocalPlayer.Character.RightHand
+        
+        LeftHand6.Part0 = game:GetService("Players").LocalPlayer.Character.LeftLowerArm
+        LeftHand6.Part1 = game:GetService("Players").LocalPlayer.Character.LeftHand
+        else
+        _G.FistLock = true
+    end
+    
+    pcall(function()
+        game:GetService("Players").LocalPlayer.Character.RightHand.RightWrist:Destroy()
+        game:GetService("Players").LocalPlayer.Character.LeftHand.LeftWrist:Destroy()
+    end)
+    
+        for i, v in pairs(GetPlayer(InputtedText)) do
+            while _G.FistLock == true and game:GetService("RunService").Heartbeat:Wait() do
+                game:GetService("Players").LocalPlayer.Character.RightHand.CFrame = PlayerService[v].Character.UpperTorso.CFrame
+                game:GetService("Players").LocalPlayer.Character.LeftHand.CFrame = PlayerService[v].Character.UpperTorso.CFrame
+            end
+    end
+end)
+
+_G.AutoStomp = false
+CreateTogButton("AutoStomp", "Toggles", (_G.AutoStomp), function()
+	if _G.AutoStomp == false then
+	_G.AutoStomp = true
+	else
+	_G.AutoStomp = false
+	end
+	while _G.AutoStomp == true and game:GetService("RunService").Stepped:Wait() do
+	game:GetService("ReplicatedStorage").MainEvent:FireServer("Stomp")
+	end
+end)
+
+_G.KillBot = false
+CreateToggleSearch("KillBot", "Toggles", (_G.KillBot), function(InputtedText)
+	if _G.KillBot == true then
+	_G.KillBot = false
+	else
+	_G.KillBot = true
+	end
+	if InputtedText ~= nil then
+	for i, v in pairs(GetPlayer(InputtedText)) do
+		local PlayerService = game:GetService("Players")
+		
+				
+			-- // Vars
+			local detectionVectors = {
+				CHECKER_1 = true,
+				TeleportDetect = true,
+				OneMoreTime = true
+			}
+			
+			-- // Metatable vars
+			local mt = getrawmetatable(game)
+			local backupnamecall = mt.__namecall
+			setreadonly(mt, false)
+			
+			-- // Hook
+			mt.__namecall = newcclosure(function(...)
+				-- // Vars
+				local method = getnamecallmethod()
+				local args = {...}
+			
+				-- // Check if it trying to do naughty
+				if (method == "FireServer" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+				
+				if (method == "CHECKER_1" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+			
+				-- // Fly Bypass
+				if (not checkcaller() and getfenv(1).crash ~= nil and getfenv(1).checkChild ~= nil) then
+					getcallingscript():Destroy()
+					return wait(9e9)
+				end
+			
+				-- // Return
+				return backupnamecall(...)
+			end)
+			
+			-- // End Metatable
+			setreadonly(mt, true)
+		
+		while _G.KillBot == true and game:GetService("RunService").Heartbeat:Wait() do
+			pcall(function()
+				repeat
+					game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = PlayerService[v].Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+					game:GetService("RunService").Heartbeat:Wait()
+				until PlayerService[v].Character:FindFirstChild("FULLY_LOADED_CHAR")
+			
+				repeat
+					if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat") then
+						game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat"))
+					end
+					if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Combat") then
+						game:GetService("Players").LocalPlayer.Character:FindFirstChild("Combat"):Activate()
+					end
+					game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = PlayerService[v].Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+					game:GetService("RunService").Heartbeat:Wait()				
+				until PlayerService[v].Character:FindFirstChild("BodyEffects"):FindFirstChild("K.O").Value == true
+			
+				repeat
+					game:GetService("ReplicatedStorage").MainEvent:FireServer("Stomp")
+					game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(PlayerService[v].Character.UpperTorso.Position + Vector3.new(0, 3, 0))
+					game:GetService("RunService").Heartbeat:Wait()
+				until PlayerService[v].Character:FindFirstChild("BodyEffects"):FindFirstChild("Dead").Value == true
+			end)
+		end
+	end
+end
+end)
+
+CreateSearchButton("Teleport To", "Combat", function(InputtedText)
+	for i, v in pairs(GetPlayer(InputtedText)) do
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Players")[v].Character.HumanoidRootPart.CFrame
+	end
+end)
+
+_G.NoStomp = false
+CreateTogButton("AntiStomp", "Toggles", (_G.NoStomp), function()
+	if _G.NoStomp == true then
+	_G.NoStomp = false
+	else
+	_G.NoStomp = true
+	end
+	
+	while _G.NoStomp == true and game:GetService("RunService").Heartbeat:Wait() do
+		pcall(function()
+			if game:GetService("Players").LocalPlayer.Character:FindFirstChild("BodyEffects"):FindFirstChild("K.O").Value == true then
+				for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+				if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+					v:Destroy()
+				end
+				end
+			end
+		end)
+	end
+end)
+
+CreateRegButton("Melee Reach", "Combat", function()
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+		if v:IsA("Tool") then
+			spawn(function()
+				pcall(function()
+					local Instance = Instance.new("SelectionBox", v.Handle)
+					Instance.Adornee = v.Handle
+					Instance.Color3 = Color3.new(255, 255, 255)
+					v.Handle.Transparency = 1
+					v.Handle.Size = Vector3.new(40, 40, 40)
+
+					while wait() do
+						v.GripForward = Vector3.new(math.random(-1000, 1000), math.random(-1000, 1000), math.random(-1000, 1000))
+						v.GripRight = Vector3.new(math.random(-1000, 1000), math.random(-1000, 1000), math.random(-1000, 1000))
+					end
+				end)
+			end)
+		end
+	end
+end)
+
+CreateSearchButton("Teleport Behind", "Combat", function(InputtedText)
+    for i, v in pairs(GetPlayer(InputtedText)) do
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Players")[v].Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0) 
+    end
+end)
+
+_G.Noclip = false
+CreateTogButton("Noclip", "Toggles", (_G.Noclip), function()
+    if _G.Noclip == true then
+    _G.Noclip = false
+    else
+    _G.Noclip = true
+end
+
+while _G.Noclip == true and game:GetService("RunService").Heartbeat:Wait() do
+    game.Players.LocalPlayer.Character:findFirstChildOfClass("Humanoid"):ChangeState(11) 
+end
+end)
+
+_G.SkinnyUnban = false
+CreateTogButton("Skinny Unban (CLIENT)", "Toggles", (_G.Noclip), function()
+if _G.SkinnyUnban == true then
+    _G.SkinnyUnban = false
+    game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 0
+    else
+    _G.SkinnyUnban = true
+end
+
+game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+    if _G.SkinnyUnban == true then
+    Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
+    Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
+    repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Cuff").Value = false
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyWidthScale").Value = 0.5
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("HeadScale").Value = 1
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyHeightScale").Value = 1
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyDepthScale").Value = 0.5
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyTypeScale").Value = 0.01
+    end
+end)
+end)
+
+_G.Unban = false
+CreateTogButton("Unban", "Toggles", _G.Unban, function()
+if _G.Unban == true then
+    _G.Unban = false
+    game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 0
+    else
+    _G.Unban = true
+end
+
+game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+    if _G.Unban == true then
+    Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
+    Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
+    repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Cuff").Value = false
+    end
+end)    
+end)
+
+_G.GodBlock = false
+CreateTogButton("GodBlock", "Toggles", _G.GodBlock, function()
+    if _G.GodBlock == true then
+    _G.GodBlock = false
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+           v:Destroy() 
+        end
+    end
+    else
+    _G.GodBlock = true
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+           v:Destroy() 
+        end
+    end
+end
+
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+    if _G.GodBlock == true then
+    Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
+    Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
+    repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Cuff").Value = false
+    game:GetService("Players").LocalPlayer.Character:findFirstChild("BodyEffects"):WaitForChild("Defense"):Destroy()
+    end
+end)
+end)
+
+_G.BulletProof = false
+CreateTogButton("BulletProof", "Toggles", _G.BulletProof, function()
+    if _G.BulletProof == true then
+    _G.BulletProof = false
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+           v:Destroy() 
+        end
+    end
+    else
+    _G.BulletProof = true
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+           v:Destroy() 
+        end
+    end
+end
+
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+    if _G.BulletProof == true then
+    Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
+    Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
+    repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
+    game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Cuff").Value = false
+    game:GetService("Players").LocalPlayer.Character:findFirstChild("BodyEffects"):WaitForChild("Armor"):Destroy()
+    end
+end)
+end)
+
+CreateRegButton("Refresh", "Combat", function()
+    local LS = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Part") or v:IsA("MeshPart") or v:IsA("Accessory") then
+           v:Destroy() 
+        end
+    end
+
+	wait(1)
+
+	repeat
+		wait()
+	until game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+	game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = LS
+
+end)
+
+_G.AntiBag = false
+CreateTogButton("AntiBag", "Toggles", (_G.AntiBag), function()
+    if _G.AntiBag == true then
+        _G.AntiBag = false
+        else
+        _G.AntiBag = true
+    end
+    
+    while _G.AntiBag == true and game:GetService("RunService").Heartbeat:Wait() do
+        pcall(function()
+            game.Players.LocalPlayer.Character:WaitForChild("Christmas_Sock"):Destroy() 
+        end)
+    end
+end)
+
+_G.AntiSlow = false
+CreateTogButton("AntiSlow", "Toggles", (_G.AntiSlow), function()
+    if _G.AntiSlow == true then
+    _G.AntiSlow = false
+    else
+    _G.AntiSlow = true
+    end
+    
+    while _G.AntiSlow == true and game:GetService("RunService").Heartbeat:Wait() do
+       	for i,v in pairs(game:GetService'Players'.LocalPlayer.Character.BodyEffects.Movement:GetChildren()) do
+			if v:IsA("NumberValue") then
+				v:Destroy()
+			end
+		end 
+    end
+end)
+
+CreateRegButton("Chat Logs", "Combat", function()
+    game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = UDim2.new(0, 0, 0, 0)
+	game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
+	game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = UDim2.new(0, 0, 0, game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Position.Y.Offset + 160)
+end)
+
+_G.Spectate = false
+CreateToggleSearch("Spectate", "Toggles", (_G.Spectate), function(InputtedText)
+    if _G.Spectate == true then
+    _G.Spectate = false
+    game:GetService("Workspace").CurrentCamera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+    else
+    _G.Spectate = true
+    end
+    
+    for i, v in pairs(GetPlayer(InputtedText)) do
+        if _G.Spectate == true then
+            game:GetService("Workspace").CurrentCamera.CameraSubject = game:GetService("Players")[v].Character 
+        else
+            game:GetService("Workspace").CurrentCamera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+        end
+    end
+end)
+
+CreateSearchButton("Flame Kill", "Combat", function(InputtedText)
+    local Character = game:GetService("Players").LocalPlayer.Character
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Playerlist = game:GetService("Players")
+local Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+local HumanoidPart = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+local Backpack = game:GetService("Players").LocalPlayer.Backpack
+local DataFolder = game:GetService("Players").LocalPlayer.DataFolder
+for i, v in pairs(GetPlayer(InputtedText)) do
+    Target = v 
+end
+
+local Kill = Playerlist[Target]
+
+Humanoid:UnequipTools()
+
+wait(.1)
+
+if Backpack:FindFirstChild("[Flamethrower]") then
+    repeat
+        game:GetService("RunService").Heartbeat:Wait()
+        Humanoid.PlatformStand = true
+        HumanoidPart.CFrame = Kill.Character.HumanoidRootPart.CFrame * CFrame.new(0, -3, 15)
+    
+        if Backpack:FindFirstChild("[Flamethrower]") then
+            Humanoid:EquipTool(Backpack:FindFirstChild("[Flamethrower]"))
+        end
+    
+        if Character:FindFirstChild("[Flamethrower]") then
+            Character:FindFirstChild("[Flamethrower]"):Activate() 
+        end
+        
+        if Character:FindFirstChild("[Flamethrower]").Ammo.Value <=0 then
+            game:GetService("ReplicatedStorage").MainEvent:FireServer("Reload", Character:FindFirstChild("[Flamethrower]"))
+            repeat
+            HumanoidPart.CFrame = Kill.Character.HumanoidRootPart.CFrame * CFrame.new(0, -3, 15)    
+            game:GetService("RunService").Heartbeat:Wait()
+            until Character:FindFirstChild("[Flamethrower]").Ammo.Value >=70
+        end
+    
+    until Kill.Character.BodyEffects:FindFirstChild("K.O").Value == true
+    Character:FindFirstChild("[Flamethrower]"):Deactivate()
+    Humanoid.PlatformStand = false
+    
+    repeat
+        game:GetService("RunService").Heartbeat:Wait()
+        Character.HumanoidRootPart.CFrame = CFrame.new(Kill.Character:FindFirstChild("UpperTorso").Position + Vector3.new(0, 3, 0))
+        game:GetService("ReplicatedStorage").MainEvent:FireServer("Stomp")
+        Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+    until Kill.Character.BodyEffects:FindFirstChild("Dead").Value == true
+    else
+    CreateNotification("You Need A FlameThrower!", 5)
+end
+end)
+
+CreateRegButton("No Recoil", "Combat", function()
+local CurrentFocus = game:GetService("Workspace").CurrentCamera.CFrame
+game:GetService("Workspace").CurrentCamera:Destroy()
+local Instance = Instance.new("Camera", game:GetService("Workspace"))
+Instance.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+Instance.CameraType = Enum.CameraType.Custom
+Instance.CFrame = CurrentFocus
+end)
+_G.FlameLock = false
+CreateToggleSearch("Flame Lock", "Toggles", (_G.FlameLock), function(InputtedText)
+    if _G.FlameLock == true then
+        _G.FlameLock = false
+        
+        wait(.3)
+        game:GetService("Players").LocalPlayer.Character.RightHand.Velocity = Vector3.new(0, 0, 0)
+        game:GetService("Players").LocalPlayer.Character.LeftHand.Velocity = Vector3.new(0, 0, 0)
+        wait(.1)
+        game:GetService("Players").LocalPlayer.Character.RightHand.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("Players").LocalPlayer.Character.LeftHand.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        
+        local RightHand6 = Instance.new("Motor6D", game:GetService("Players").LocalPlayer.Character.RightHand)
+        
+        RightHand6.Name = "RightWrist"
+        RightHand6.Part0 = game:GetService("Players").LocalPlayer.Character.RightLowerArm
+        RightHand6.Part1 = game:GetService("Players").LocalPlayer.Character.RightHand
+        else
+        _G.FlameLock = true
+    end
+    
+    local Factor = 0.200
+    
+        pcall(function()
+        game:GetService("Players").LocalPlayer.Character.RightHand.RightWrist:Destroy()
+        end)
+    
+    for i, v3 in pairs(GetPlayer(InputtedText)) do  
+        while _G.FlameLock == true and game:GetService("RunService").Heartbeat:Wait() do
+            game:GetService("Players").LocalPlayer.Character.RightHand.CFrame = CFrame.new(game:GetService("Players")[v3].Character.HumanoidRootPart.Position.X+(game:GetService("Players")[v3].Character.Head.Velocity.X*Factor), game:GetService("Players")[v3].Character.HumanoidRootPart.Position.Y+10+(game:GetService("Players")[v3].Character.Head.Velocity.Y*Factor), game:GetService("Players")[v3].Character.HumanoidRootPart.Position.Z+(game:GetService("Players")[v3].Character.Head.Velocity.Z*Factor))
+        end
+    end
+end)
+
+CreateNote("These Farms Are Currently In BETA", "Farms")
+
+_G.AntiAFK = false
+CreateTogButton("Anti AFK", "Farms", (_G.AntiAFK), function()
+    if _G.AntiAFK == true then
+        _G.AntiAFK = false 
+    else
+        _G.AntiAFK = true
+    end
+    
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+    if _G.AntiAFK == true then
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end
+    end)
+end)
+
+_G.ATMFarm = true
+CreateTogButton("ATM Farm", "Farms", (_G.ATMFarm), function()
+    if _G.ATMFarm == true then
+    _G.ATMFarm = false
+    else
+    _G.ATMFarm = true
+    end
+    
+    while _G.ATMFarm == true and game:GetService("RunService").Heartbeat:Wait() do
+        for i, v in pairs(game:GetService("Workspace").Cashiers:GetChildren()) do
+            if v.Humanoid.Health >= 25 then
+                repeat
+                    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat") then
+                    game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat")) 
+                    end
+                    if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Combat") then
+                        game:GetService("Players").LocalPlayer.Character:FindFirstChild("Combat"):Activate() 
+                    end
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Open.CFrame
+                    game:GetService("RunService").Heartbeat:Wait()
+                until v.Humanoid.Health <= 5 or _G.ATMFarm == false
+                
+                for i, v in pairs(game:GetService("Workspace").Ignored.Drop:GetChildren()) do
+                    if v.Name == "MoneyDrop" and (game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude <= 15 then
+                        fireclickdetector(v.ClickDetector)
+                        wait(0.7)
+                    end
+                end
+                
+                
+            end
+        end
+    end
+end)
+
+_G.Hospital = false
+CreateTogButton("Hospital Farm", "Farms", (_G.Hospital), function()
+    if _G.Hospital == true then
+        _G.Hospital = false
+    else
+        _G.Hospital = true
+    end
+    
+    while _G.Hospital == true and game:GetService("RunService").Heartbeat:Wait() do
+        for i, v in pairs(game:GetService("Workspace").Ignored.HospitalJob:GetChildren()) do
+            pcall(function()
+            if v.Name == "Can I get the Red bottle" then
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.HospitalJob.Red.CFrame
+                wait(.1)
+                fireclickdetector(game:GetService("Workspace").Ignored.HospitalJob.Red.ClickDetector)
+                wait(.1)
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Head.CFrame
+                wait(.1)
+                fireclickdetector(v.ClickDetector)
+                wait(.1)
+            elseif v.Name == "Can I get the Blue bottle" then
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.HospitalJob.Blue.CFrame
+                wait(.1)
+                fireclickdetector(game:GetService("Workspace").Ignored.HospitalJob.Blue.ClickDetector)
+                wait(.1)
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Head.CFrame
+                wait(.1)
+                fireclickdetector(v.ClickDetector)
+                wait(.1)
+            elseif v.Name == "Can I get the Green bottle" then
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.HospitalJob.Green.CFrame
+                wait(.1)
+                fireclickdetector(game:GetService("Workspace").Ignored.HospitalJob.Green.ClickDetector)
+                wait(.1)
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Head.CFrame
+                wait(.1)
+                fireclickdetector(v.ClickDetector)
+                wait(.1)
+            end
+            end)
+        end
+    end
+end)
+
+_G.ShoeJob = false
+CreateTogButton("Shoe Farm", "Farms", _G.ShoeJob, function()
+if _G.ShoeJob == true then
+    _G.ShoeJob = false
+    else
+    _G.ShoeJob = true
+end
+
+while _G.ShoeJob == true and game:GetService("RunService").Heartbeat:Wait() do
+    for i, v in pairs(game:GetService("Workspace").Ignored.Drop:GetChildren()) do
+        pcall(function()
+        if v:IsA("MeshPart") then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            wait(.1)
+            fireclickdetector(v.ClickDetector)
+            wait(.1)
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored["Clean the shoes on the floor and come to me for cash"].Head.CFrame
+            wait(.1)
+            fireclickdetector(game:GetService("Workspace").Ignored["Clean the shoes on the floor and come to me for cash"].ClickDetector)
+            wait(.1)
+        end
+        end)
+    end
+end
+end)
+
+_G.AdminDoor = false
+_G.Wait = false
+CreateTogButton("Admin Door", "Toggles", (_G.AdminDoor), function()
+    if _G.AdminDoor == true and _G.Wait == false then
+    _G.AdminDoor = false
+    _G.Wait = true
+    local AdminDoor = game:GetService("Workspace").MAP["EVIL_SPECIAL"]
+    local TweenService = game:GetService("TweenService")
+
+    local tweenInfo = TweenInfo.new(1.5)
+
+    local TweenGoal = {}
+    TweenGoal.Position = AdminDoor.Position + Vector3.new(0, -25, 0)
+
+    local Tween = TweenService:Create(AdminDoor, tweenInfo, TweenGoal)
+    AdminDoor.Sound:Play()
+    Tween:Play()
+    wait(1.5)
+    _G.Wait = false
+    elseif _G.AdminDoor == false and _G.Wait == false then
+    _G.AdminDoor = true
+    _G.Wait = true
+    local AdminDoor = game:GetService("Workspace").MAP["EVIL_SPECIAL"]
+    local TweenService = game:GetService("TweenService")
+
+    local tweenInfo = TweenInfo.new(1.5)
+
+    local TweenGoal = {}
+    TweenGoal.Position = AdminDoor.Position + Vector3.new(0, 25, 0)
+
+    local Tween = TweenService:Create(AdminDoor, tweenInfo, TweenGoal)
+    AdminDoor.Sound:Play()
+    Tween:Play()
+    wait(1.5)
+    _G.Wait = false
+    end
+end)
+
+CreateNote("Coming Soon", "Settings")
