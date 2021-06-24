@@ -1,0 +1,557 @@
+function CreateWindow(Name, ThemeColor)
+    for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do 
+        if v.Name == "PolarsUiLib" then 
+            v:Destroy() 
+        end 
+    end
+
+local PolarsUiLib = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local HotBar = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local SelectedColor = Instance.new("Frame")
+local DeActiveColor = Instance.new("Frame")
+local ImageButton = Instance.new("ImageButton")
+local Menus = Instance.new("Frame")
+local UICorner_3 = Instance.new("UICorner")
+local MenuOptions = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local Buttons = Instance.new("Frame")
+local UICorner_4 = Instance.new("UICorner")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local UIListLayout_2 = Instance.new("UIListLayout")
+
+local Drag = Frame
+gsCoreGui = game:GetService("CoreGui")
+gsTween = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	local function update(input)
+		local delta = input.Position - dragStart
+		local dragTime = 0.04
+		local SmoothDrag = {}
+		SmoothDrag.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		local dragSmoothFunction = gsTween:Create(Drag, TweenInfo.new(dragTime, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), SmoothDrag)
+		dragSmoothFunction:Play()
+	end
+	Drag.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = Drag.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	Drag.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging and Drag.Size then
+			update(input)
+		end
+	end)
+
+
+PolarsUiLib.Name = "PolarsUiLib"
+PolarsUiLib.Parent = game:WaitForChild("CoreGui")
+PolarsUiLib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = PolarsUiLib
+Frame.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.317293286, 0, 0.3007752, 0)
+Frame.Size = UDim2.new(0, 486, 0, 256)
+Frame.AutomaticSize = 2
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = Frame
+
+HotBar.Name = "HotBar"
+HotBar.Parent = Frame
+HotBar.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+HotBar.Position = UDim2.new(0.0185185187, 0, 0.03515625, 0)
+HotBar.Size = UDim2.new(0, 467, 0, 20)
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = HotBar
+
+TextLabel.Parent = HotBar
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0.0185184851, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 75, 0, 19)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.Text = Name
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 14.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+SelectedColor.Name = "SelectedColor"
+SelectedColor.Parent = HotBar
+SelectedColor.BackgroundColor3 = ThemeColor
+SelectedColor.BorderSizePixel = 0
+SelectedColor.Position = UDim2.new(1.32548177, 0, -3.95000005, 0)
+SelectedColor.Size = UDim2.new(0, 100, 0, 20)
+SelectedColor.Visible = false
+
+DeActiveColor.Name = "DeActiveColor"
+DeActiveColor.Parent = HotBar
+DeActiveColor.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+DeActiveColor.BorderSizePixel = 0
+DeActiveColor.Position = UDim2.new(1.32548177, 0, -2.4000001, 0)
+DeActiveColor.Size = UDim2.new(0, 100, 0, 20)
+DeActiveColor.Visible = false
+
+ImageButton.Parent = HotBar
+ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ImageButton.BackgroundTransparency = 1.000
+ImageButton.Position = UDim2.new(0.958999991, 0, 0.150000006, 0)
+ImageButton.Size = UDim2.new(0, 13, 0, 13)
+ImageButton.Image = "http://www.roblox.com/asset/?id=6826758926"
+
+Menus.Name = "Menus"
+Menus.Parent = Frame
+Menus.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Menus.BorderSizePixel = 0
+Menus.Position = UDim2.new(0.0185185187, 0, 0.143749952, 0)
+Menus.Size = UDim2.new(0, 158, 0, 210)
+
+UICorner_3.CornerRadius = UDim.new(0, 4)
+UICorner_3.Parent = Menus
+
+MenuOptions.Name = "MenuOptions"
+MenuOptions.Parent = Menus
+MenuOptions.Active = true
+MenuOptions.AnchorPoint = Vector2.new(0.5, 0.5)
+MenuOptions.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MenuOptions.BackgroundTransparency = 1.000
+MenuOptions.BorderSizePixel = 0
+MenuOptions.Position = UDim2.new(0.5, 0, 0.5, 0)
+MenuOptions.Size = UDim2.new(0, 158, 0, 198)
+MenuOptions.ScrollBarThickness = 0
+MenuOptions.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
+UIListLayout.Parent = MenuOptions
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 4)
+
+Buttons.Name = "Buttons"
+Buttons.Parent = Frame
+Buttons.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Buttons.BorderSizePixel = 0
+Buttons.Position = UDim2.new(0.355967075, 0, 0.143749952, 0)
+Buttons.Size = UDim2.new(0, 303, 0, 210)
+
+UICorner_4.CornerRadius = UDim.new(0, 4)
+UICorner_4.Parent = Buttons
+
+ScrollingFrame.Parent = Buttons
+ScrollingFrame.Active = true
+ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ScrollingFrame.BackgroundTransparency = 1.000
+ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ScrollingFrame.Size = UDim2.new(0, 303, 0, 198)
+ScrollingFrame.ScrollBarThickness = 0
+
+UIListLayout_2.Parent = ScrollingFrame
+UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout_2.Padding = UDim.new(0, 4)
+
+local function CGWN_fake_script() -- ImageButton.LocalScript 
+	local script = Instance.new('LocalScript', ImageButton)
+
+	script.Parent.MouseButton1Down:Connect(function()
+		script.Parent.Parent.Parent:Destroy()
+	end)
+end
+coroutine.wrap(CGWN_fake_script)()
+
+function CreateMenu(name)
+    local ScrollingFrame = Instance.new("ScrollingFrame")
+    local UIListLayout = Instance.new("UIListLayout")
+    ScrollingFrame.Visible = false
+    ScrollingFrame.Name = name
+    ScrollingFrame.Parent = Buttons
+    ScrollingFrame.Active = true
+    ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ScrollingFrame.BackgroundTransparency = 1.000
+    ScrollingFrame.BorderSizePixel = 0
+    ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ScrollingFrame.Size = UDim2.new(0, 303, 0, 198)
+    ScrollingFrame.ScrollBarThickness = 0
+    ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
+    UIListLayout.Parent = ScrollingFrame
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 4)
+
+local TextButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+TextButton.Name = name
+TextButton.Parent = MenuOptions
+TextButton.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+TextButton.Size = UDim2.new(0, 130, 0, 25)
+TextButton.Font = Enum.Font.GothamSemibold
+TextButton.Text = name
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextSize = 12.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = TextButton
+
+local function RXZDVI_fake_script() -- TextButton.LocalScript 
+	local script = Instance.new('LocalScript', TextButton)
+
+	script.Parent.MouseButton1Down:Connect(function()
+		for i, v in pairs(script.Parent.Parent.Parent.Parent.Buttons:GetChildren()) do
+			if v.Name == script.Parent.Name and v.ClassName == "ScrollingFrame" then
+				v.Visible = true
+			else
+				if v.ClassName == "ScrollingFrame" then
+					v.Visible = false
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(RXZDVI_fake_script)()
+
+end
+
+function CreateRegButton(text, menu, callback)
+    text = text or "New Button"
+    callback = callback or function() end
+    
+    local Regulars = Instance.new("TextButton")
+    local UICorner = Instance.new("UICorner")
+    local TextLabel = Instance.new("TextLabel")
+    
+    Regulars.Name = text
+    Regulars.Parent = Buttons[menu]
+    Regulars.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    Regulars.BorderSizePixel = 0
+    Regulars.Position = UDim2.new(0.0198019799, 0, 0, 0)
+    Regulars.Size = UDim2.new(0, 291, 0, 25)
+    Regulars.Font = Enum.Font.SourceSans
+    Regulars.Text = ""
+    Regulars.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Regulars.TextSize = 14.000
+    
+    UICorner.CornerRadius = UDim.new(0, 4)
+    UICorner.Parent = Regulars
+    
+    TextLabel.Parent = Regulars
+    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.BackgroundTransparency = 1.000
+    TextLabel.BorderSizePixel = 0
+    TextLabel.Position = UDim2.new(0.0343642607, 0, 0, 0)
+    TextLabel.Size = UDim2.new(0, 107, 0, 25)
+    TextLabel.Font = Enum.Font.GothamSemibold
+    TextLabel.Text = text
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 12.000
+    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    Regulars.MouseButton1Down:Connect(function()
+        pcall(callback)
+    end)
+end
+
+function CreateTogButton(text, menu, setvar,callback)
+local Toggles = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local ToggleCheck = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+
+Toggles.Name = text
+Toggles.Parent = Buttons[menu]
+Toggles.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+Toggles.BorderSizePixel = 0
+Toggles.Position = UDim2.new(0.0198019799, 0, 0, 0)
+Toggles.Size = UDim2.new(0, 291, 0, 25)
+Toggles.Font = Enum.Font.SourceSans
+Toggles.Text = ""
+Toggles.TextColor3 = Color3.fromRGB(0, 0, 0)
+Toggles.TextSize = 14.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = Toggles
+
+TextLabel.Parent = Toggles
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0343642607, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 107, 0, 25)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.Text = text
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 12.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+ToggleCheck.Name = "Toggle Check"
+ToggleCheck.Parent = Toggles
+ToggleCheck.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+ToggleCheck.BorderSizePixel = 0
+ToggleCheck.Position = UDim2.new(0.742268026, 0, 0.159999996, 0)
+ToggleCheck.Size = UDim2.new(0, 62, 0, 17)
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = ToggleCheck
+
+Toggles.MouseButton1Down:Connect(function()
+    if setvar == true then
+		setvar = false
+		local ColorTween = {}
+        ColorTween.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+        local ColorInfo = TweenInfo.new(0.2)
+        local ColorToTween = game:GetService("TweenService"):Create(Toggles["Toggle Check"], ColorInfo, ColorTween)
+        ColorToTween:Play()
+        
+    else
+    	setvar = true
+    	local ColorTween = {}
+        ColorTween.BackgroundColor3 = PolarsUiLib.Frame.HotBar.SelectedColor.BackgroundColor3
+        local ColorInfo = TweenInfo.new(0.2)
+        local ColorToTween = game:GetService("TweenService"):Create(Toggles["Toggle Check"], ColorInfo, ColorTween)
+        ColorToTween:Play()
+    end
+    pcall(callback)
+end)
+end
+
+function CreateSearchButton(text, menu, callback)
+local SearchableButtons = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local UICorner_2 = Instance.new("UICorner")
+
+SearchableButtons.Name = text
+SearchableButtons.Parent = Buttons[menu]
+SearchableButtons.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+SearchableButtons.BorderSizePixel = 0
+SearchableButtons.Position = UDim2.new(0.0198019799, 0, 0, 0)
+SearchableButtons.Size = UDim2.new(0, 291, 0, 25)
+SearchableButtons.Font = Enum.Font.SourceSans
+SearchableButtons.Text = ""
+SearchableButtons.TextColor3 = Color3.fromRGB(0, 0, 0)
+SearchableButtons.TextSize = 14.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = SearchableButtons
+
+TextLabel.Parent = SearchableButtons
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0343642607, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 107, 0, 25)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.Text = text
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 12.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+TextBox.Parent = SearchableButtons
+TextBox.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+TextBox.Position = UDim2.new(0.528941572, 0, 0.159999996, 0)
+TextBox.Size = UDim2.new(0, 124, 0, 17)
+TextBox.Font = Enum.Font.GothamSemibold
+TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.PlaceholderText = "Target Here..."
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 10.000
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = TextBox
+
+SearchableButtons.MouseButton1Down:Connect(function()
+    pcall(callback, TextBox.Text)
+end)
+    end
+
+function CreateToggleSearch(text, menu, callback)
+local SearchableToggles = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local ToggleCheck = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local TextBox = Instance.new("TextBox")
+local UICorner_3 = Instance.new("UICorner")
+
+SearchableToggles.Name = text
+SearchableToggles.Parent = Buttons[menu]
+SearchableToggles.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+SearchableToggles.BorderSizePixel = 0
+SearchableToggles.Position = UDim2.new(0.0198019799, 0, 0, 0)
+SearchableToggles.Size = UDim2.new(0, 291, 0, 25)
+SearchableToggles.Font = Enum.Font.SourceSans
+SearchableToggles.Text = ""
+SearchableToggles.TextColor3 = Color3.fromRGB(0, 0, 0)
+SearchableToggles.TextSize = 14.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = SearchableToggles
+
+TextLabel.Parent = SearchableToggles
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0343642607, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 107, 0, 25)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.Text = text
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 12.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+ToggleCheck.Name = "Toggle Check"
+ToggleCheck.Parent = SearchableToggles
+ToggleCheck.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+ToggleCheck.BorderSizePixel = 0
+ToggleCheck.Position = UDim2.new(0.742268026, 0, 0.159999996, 0)
+ToggleCheck.Size = UDim2.new(0, 62, 0, 17)
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = ToggleCheck
+
+TextBox.Parent = SearchableToggles
+TextBox.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+TextBox.Position = UDim2.new(0.44646734, 0, 0.159999996, 0)
+TextBox.Size = UDim2.new(0, 80, 0, 17)
+TextBox.Font = Enum.Font.GothamSemibold
+TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.PlaceholderText = "Target Here..."
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 10.000
+
+UICorner_3.CornerRadius = UDim.new(0, 4)
+UICorner_3.Parent = TextBox
+
+Toggle = false
+SearchableToggles.MouseButton1Down:Connect(function()
+    if Toggle == true then
+        Toggle = false
+        
+        local ColorTween = {}
+        ColorTween.BackgroundColor3 = Color3.new(0.0627451, 0.0627451, 0.0627451)
+        local ColorInfo = TweenInfo.new(0.2)
+        local ColorToTween = game:GetService("TweenService"):Create(SearchableToggles["Toggle Check"], ColorInfo, ColorTween)
+        ColorToTween:Play()
+        
+    else
+        Toggle = true
+        
+        local ColorTween = {}
+        ColorTween.BackgroundColor3 = PolarsUiLib.Frame.HotBar.SelectedColor.BackgroundColor3
+        local ColorInfo = TweenInfo.new(0.2)
+        local ColorToTween = game:GetService("TweenService"):Create(SearchableToggles["Toggle Check"], ColorInfo, ColorTween)
+        ColorToTween:Play()
+    end
+    pcall(callback, TextBox.Text)
+end)
+end
+
+function CreateNote(text, menu, callback)
+local TextLabel = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local TextLabel_2 = Instance.new("TextLabel")
+
+TextLabel.Name = text
+TextLabel.Parent = Buttons[menu]
+TextLabel.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+TextLabel.Size = UDim2.new(0, 291, 0, 25)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = ""
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextSize = 14.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = TextLabel
+
+TextLabel_2.Parent = TextLabel
+TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.BackgroundTransparency = 1.000
+TextLabel_2.BorderSizePixel = 0
+TextLabel_2.Position = UDim2.new(0.0343642607, 0, 0, 0)
+TextLabel_2.Size = UDim2.new(0, 107, 0, 25)
+TextLabel_2.Font = Enum.Font.GothamSemibold
+TextLabel_2.Text = text
+TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.TextSize = 12.000
+TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
+end
+
+function CreateValueButton(text, menu, callback)
+local NumberValueButtons = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local UICorner_2 = Instance.new("UICorner")
+
+NumberValueButtons.Name = text
+NumberValueButtons.Parent = Buttons[menu]
+NumberValueButtons.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+NumberValueButtons.BorderSizePixel = 0
+NumberValueButtons.Position = UDim2.new(0.0198019799, 0, 0, 0)
+NumberValueButtons.Size = UDim2.new(0, 291, 0, 25)
+NumberValueButtons.Font = Enum.Font.SourceSans
+NumberValueButtons.Text = ""
+NumberValueButtons.TextColor3 = Color3.fromRGB(0, 0, 0)
+NumberValueButtons.TextSize = 14.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = NumberValueButtons
+
+TextLabel.Parent = NumberValueButtons
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0343642607, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 107, 0, 25)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.Text = text
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 12.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+TextBox.Parent = NumberValueButtons
+TextBox.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+TextBox.Position = UDim2.new(0.528941572, 0, 0.159999996, 0)
+TextBox.Size = UDim2.new(0, 124, 0, 17)
+TextBox.Font = Enum.Font.GothamSemibold
+TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.PlaceholderText = "Value Here"
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 10.000
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = TextBox
+
+NumberValueButtons.MouseButton1Down:Connect(function()
+    pcall(callback, tonumber(TextBox.Text))
+end)
+end
