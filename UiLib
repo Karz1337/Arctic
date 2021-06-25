@@ -271,6 +271,14 @@ function CreateRegButton(text, menu, callback)
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
     Regulars.MouseButton1Down:Connect(function()
+        local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+SoundClick.SoundId = "rbxassetid://5361200101"
+SoundClick:Play()
+spawn(function()
+    wait(1)
+    SoundClick:Destroy()
+end)
+        
         pcall(callback)
     end)
 end
@@ -319,6 +327,14 @@ UICorner_2.CornerRadius = UDim.new(0, 4)
 UICorner_2.Parent = ToggleCheck
 
 Toggles.MouseButton1Down:Connect(function()
+    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+SoundClick.SoundId = "rbxassetid://5361200101"
+SoundClick:Play()
+spawn(function()
+    wait(1)
+    SoundClick:Destroy()
+end)
+    
     if setvar == true then
 		setvar = false
 		local ColorTween = {}
@@ -387,6 +403,14 @@ UICorner_2.CornerRadius = UDim.new(0, 4)
 UICorner_2.Parent = TextBox
 
 SearchableButtons.MouseButton1Down:Connect(function()
+    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+SoundClick.SoundId = "rbxassetid://5361200101"
+SoundClick:Play()
+spawn(function()
+    wait(1)
+    SoundClick:Destroy()
+end)
+    
     pcall(callback, TextBox.Text)
 end)
     end
@@ -452,6 +476,14 @@ UICorner_3.Parent = TextBox
 
 VarToToggle = false
 SearchableToggles.MouseButton1Down:Connect(function()
+    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+SoundClick.SoundId = "rbxassetid://5361200101"
+SoundClick:Play()
+spawn(function()
+    wait(1)
+    SoundClick:Destroy()
+end)
+    
     if VarToToggle == true then
         VarToToggle = false
         
