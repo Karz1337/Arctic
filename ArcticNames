@@ -1,10 +1,12 @@
+while wait(20) do
 for i, v in pairs(game:GetService("Players"):GetChildren()) do
       if v:IsInGroup(11247010) and v.Name ~= game:GetService("Players").LocalPlayer.Name then
           if v.Name ~= "[❄️] "..v.Character.Name then
               v.Character.Humanoid.DisplayName = "[❄️] "..v.Character.Name
           end
      end
-  end 
+ end
+ end
 
 game:GetService("Players").PlayerAdded:Connect(function(player)
 	      if v:IsInGroup(11247010) and v.Name ~= game:GetService("Players").LocalPlayer.Name then
