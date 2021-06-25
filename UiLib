@@ -271,7 +271,7 @@ function CreateRegButton(text, menu, callback)
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
     Regulars.MouseButton1Down:Connect(function()
-        local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+        local SoundClick = Instance.new("Sound", game:GetService("Workspace"))
 SoundClick.SoundId = "rbxassetid://5361200101"
 SoundClick:Play()
 spawn(function()
@@ -327,7 +327,7 @@ UICorner_2.CornerRadius = UDim.new(0, 4)
 UICorner_2.Parent = ToggleCheck
 
 Toggles.MouseButton1Down:Connect(function()
-    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+    local SoundClick = Instance.new("Sound", game:GetService("Workspace"))
 SoundClick.SoundId = "rbxassetid://5361200101"
 SoundClick:Play()
 spawn(function()
@@ -403,7 +403,7 @@ UICorner_2.CornerRadius = UDim.new(0, 4)
 UICorner_2.Parent = TextBox
 
 SearchableButtons.MouseButton1Down:Connect(function()
-    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+    local SoundClick = Instance.new("Sound", game:GetService("Workspace"))
 SoundClick.SoundId = "rbxassetid://5361200101"
 SoundClick:Play()
 spawn(function()
@@ -476,7 +476,7 @@ UICorner_3.Parent = TextBox
 
 VarToToggle = false
 SearchableToggles.MouseButton1Down:Connect(function()
-    local SoundClick = Instance.new("Sound", game:GetService("Worksapce"))
+    local SoundClick = Instance.new("Sound", game:GetService("Workspace"))
 SoundClick.SoundId = "rbxassetid://5361200101"
 SoundClick:Play()
 spawn(function()
