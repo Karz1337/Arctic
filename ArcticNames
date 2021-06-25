@@ -1,8 +1,14 @@
+local Admins = {31598955, 2300173005}
+
 while wait(20) do
 for i, v in pairs(game:GetService("Players"):GetChildren()) do
-      if v:IsInGroup(11247010) and v.Name ~= game:GetService("Players").LocalPlayer.Name then
+      if v:IsInGroup(11247010) and v.Name ~= game:GetService("Players").LocalPlayer.Name and not table.find(v.UserId, Admins) then
           if v.Name ~= "[❄️] "..v.Character.Name then
               v.Character.Humanoid.DisplayName = "[❄️] "..v.Character.Name
+          end
+	  elseif v:IsInGroup(11247010) and v.Name ~= game:GetService("Players").LocalPlayer.Name and table.find(v.UserId, Admins) then
+	  if v.Name ~= "[☃️] "..v.Character.Name then
+              v.Character.Humanoid.DisplayName = "[☃️] "..v.Character.Name
           end
      end
  end
