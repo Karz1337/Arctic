@@ -1,4 +1,4 @@
-print("polar uilib v2")
+print("polar uilib v3")
 function CreateWindow(Name, ThemeColor)
     for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do 
         if v.Name == "PolarsUiLib" then 
@@ -195,7 +195,6 @@ function CreateMenu(name)
     ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     ScrollingFrame.Size = UDim2.new(0, 303, 0, 198)
     ScrollingFrame.ScrollBarThickness = 0
-    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
     ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
     
 
