@@ -731,4 +731,36 @@ function CreateWindow(Title)
                         pcall(callback, tonumber(TextBox.Text))
                     end)	
                 end
+               function CreateNote(Title, Menu)
+local Regular = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+
+Regular.Name = Title
+Regular.Parent = Menus[Menu]
+Regular.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Regular.BorderSizePixel = 0
+Regular.Position = UDim2.new(0.0454545468, 0, 0, 0)
+Regular.Size = UDim2.new(0, 336, 0, 23)
+Regular.Font = Enum.Font.SourceSans
+Regular.Text = ""
+Regular.TextColor3 = Color3.fromRGB(255, 255, 255)
+Regular.TextSize = 12.000
+
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = Regular
+
+TextLabel.Parent = Regular
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderColor3 = Color3.fromRGB(27, 42, 53)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0386904776, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 148, 0, 23)
+TextLabel.Font = Enum.Font.GothamSemibold
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 12.000
+	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel.Text = Title
+end
     end
