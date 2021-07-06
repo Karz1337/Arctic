@@ -404,7 +404,7 @@ function CreateWindow(Title)
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.TextSize = 12.000
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-    TextLabel.Name = Title
+    TextLabel.Text = Title
     
     Frame.Parent = Toggles
     Frame.BackgroundColor3 = Color3.fromRGB(6, 6, 6)
