@@ -763,4 +763,15 @@ TextLabel.TextSize = 12.000
 	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 	TextLabel.Text = Title
 end
+
+function CreateNotification(text, duration)
+	game:GetService("StarterGui"):SetCore("SendNotification", {	Title = "Notification!";	Text = text;	Duration = duration;})
+    local Sound = Instance.new("Sound", game:GetService("Workspace"))
+	Sound.SoundId = "rbxassetid://5035412139"
+	Sound:Play()
+    spawn(function()
+        wait(2)
+        Sound:Destroy()
+    end)
+end
     end
