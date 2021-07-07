@@ -560,7 +560,7 @@ function CreateWindow(Title)
                 pcall(callback, TextBox.Text)
             end)
         end
-        function CreateValueButton(Title, Menu, callback)
+        function CreateValueButton(Title, Menu, Custom, callback)
     
             local NumberValues = Instance.new("TextButton")
             local UICorner = Instance.new("UICorner")
@@ -601,7 +601,7 @@ function CreateWindow(Title)
             TextBox.Size = UDim2.new(0, 108, 0, 16)
             TextBox.Font = Enum.Font.GothamSemibold
             TextBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-            TextBox.PlaceholderText = "Amount Here"
+            TextBox.PlaceholderText = Custom
             TextBox.Text = ""
             TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
             TextBox.TextSize = 10.000
