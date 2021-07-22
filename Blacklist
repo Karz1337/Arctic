@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-BlackList = {2633150279}
+BlackList = {2633150279, 433790502}
 
 if table.find(BlackList, game:GetService("Players").LocalPlayer.UserId) then
     game:GetService("Players").LocalPlayer:Kick("Arctic | BlackListed.")
