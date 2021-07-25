@@ -1,0 +1,39 @@
+    		-- // Vars
+			local detectionVectors = {
+				CHECKER_1 = true,
+				TeleportDetect = true,
+				OneMoreTime = true
+			}
+			
+			-- // Metatable vars
+			local mt = getrawmetatable(game)
+			local backupnamecall = mt.__namecall
+			setreadonly(mt, false)
+			
+			-- // Hook
+			mt.__namecall = newcclosure(function(...)
+				-- // Vars
+				local method = getnamecallmethod()
+				local args = {...}
+			
+				-- // Check if it trying to do naughty
+				if (method == "FireServer" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+				
+				if (method == "CHECKER_1" and tostring(args[1]) == "MainEvent" and detectionVectors[args[2]]) then
+					return wait(9e9)
+				end
+			
+				-- // Fly Bypass
+				if (not checkcaller() and getfenv(1).crash ~= nil and getfenv(1).checkChild ~= nil) then
+					getcallingscript():Destroy()
+					return wait(9e9)
+				end
+			
+				-- // Return
+				return backupnamecall(...)
+			end)
+			
+			-- // End Metatable
+			setreadonly(mt, true)
